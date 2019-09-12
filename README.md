@@ -8,7 +8,7 @@ This code is demonstrates a simple lineChart
  
  
 # AnimateCircleCounter
-This code is demonstrates a way animating a circle using both a counter, and download progress
+This code is demonstrates a way animating a circle using both a counter, and download progressd
 
 # Demo
 <img src="demo2.png" alt="Demo Image" width="360"/>
