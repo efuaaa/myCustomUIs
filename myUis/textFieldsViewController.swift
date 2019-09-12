@@ -8,23 +8,27 @@
 
 import UIKit
 import Foundation
+import iOSDropDown
+
 
 class textFieldsViewController: UIViewController, UITextFieldDelegate {
 
     
     
+    @IBOutlet weak var dropDown: DropDown!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var usaView: UIView!
-    
+    @IBOutlet weak var dropdownImageView: UIImageView!
     @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var ghView: UIView!
+    @IBOutlet weak var dropDownLabel: UILabel!
     @IBOutlet weak var textfield1: ExpFloatingLabelTextField!
     @IBOutlet weak var textfield2: ExpFloatingLabelTextField!
-//    let usLocale = Locale(identifier: "en_US")
-    var typedValue: Int = 0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        dropdownImageView.layer.cornerRadius = dropdownImageView.frame.size.width/2
+        dropdownImageView.clipsToBounds = true
 
         setupTextfields(textField: textfield1)
         setupTextfields(textField: textfield2)
@@ -32,16 +36,45 @@ class textFieldsViewController: UIViewController, UITextFieldDelegate {
         textfield2.addTarget(self, action: #selector(myTextFieldDidChange(_:)), for: .editingChanged)
         textfield1.addTarget(self, action: #selector(calculateUSD(_:)), for: .editingChanged)
         textfield2.addTarget(self, action: #selector(calculateGHS(_:)), for: .editingChanged)
-        rateLabel.layer.cornerRadius = 5
+        rateLabel.layer.cornerRadius = 12
         parentView.layer.cornerRadius = 5
-//         textfield2.layer.cornerRadius = 5
-////        textfield1.roundBottomBorderLeft()
-////        textfield2.roundBottomBorderRight()
-//         ghView.layer.cornerRadius = 5
-//         usaView.layer.cornerRadius = 5
-
-
+      
+        rateLabel.layer.masksToBounds = true
+        setupDropDownTextField(dropDown: dropDown)
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func setupDropDownTextField(dropDown: DropDown )
+    {
+        dropDown.optionArray = ["PerfectMoney USD", "Bitcoin USD", "Skrill USD", "Ether USD", "Litecoin USD","Bitcoin Cash USD", "Dogecoin"]
+        dropDown.isSearchEnable = false
+        dropDown.rowHeight = 50
+        dropDown.selectedRowColor = .white
+        dropDown.listHeight = 300
+        dropDown.optionIds = [1,2,3,4,5,6,7,8]
+        dropDown.optionImageArray = ["filled-circle", "filled-circleq2",  "user-female-circle", "filled-circle", "filled-circleq2", "user-female-circle"]
+        dropdownImageView.image = UIImage(named: "user-female-circle")
+        
+        
+        // The the Closure returns Selected Index and String
+        dropDown.didSelect{(selectedText , index ,id) in
+            self.dropDownLabel.text = "\(selectedText)"
+        }
+        
+        dropDown.didSelect{(selectedImage , index ,id) in
+            self.dropdownImageView.image =  UIImage(named: "\(selectedImage)")
+        }
+    }
+    
+    
     
 
     func setupTextfields(textField:ExpFloatingLabelTextField){
@@ -132,29 +165,16 @@ extension String {
 
         var number: NSNumber!
         let formatter = NumberFormatter()
-//        formatter.numberStyle = .currencyAccounting
-//        formatter.currencySymbol = "$"
-        
         formatter.numberStyle = .currency
         // localize to your grouping and decimal separator
         
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-
         var amountWithPrefix = self
-
         // remove from String: "$", ".", ","
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
         amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
 
         let double = (amountWithPrefix as NSString).doubleValue
         number = NSNumber(value: (double / 100))
-
-        // if first number is 0 or all numbers were deleted
-//        guard number != 0 as NSNumber else {
-//            return ""
-//        }
-
         return formatter.string(from: number)!
     }
 }
