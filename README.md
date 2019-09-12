@@ -4,7 +4,7 @@
 This code is demonstrates a simple lineChart
 
 # Demo
- <img src="demo3.png" alt="Demo Image" width="360"/>
+ <img src="demo.png" alt="Demo Image" width="360"/>
  
  
 # AnimateCircleCounter
