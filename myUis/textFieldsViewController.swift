@@ -60,7 +60,7 @@ class textFieldsViewController: UIViewController, UITextFieldDelegate {
         dropDown.selectedRowColor = .white
         dropDown.listHeight = 300
         dropDown.optionIds = [1,2,3,4,5,6,7,8]
-        dropDown.optionImageArray = ["filled-circle", "filled-circleq2",  "user-female-circle", "filled-circle", "filled-circleq2", "user-female-circle"]
+        dropDown.optionImageArray = ["charts", "filled-circleq2",  "user-female-circle", "filled-circle", "filled-circleq2", "user-female-circle"]
         dropdownImageView.image = UIImage(named: "user-female-circle")
         
         

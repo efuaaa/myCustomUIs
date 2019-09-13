@@ -320,24 +320,47 @@ extension DropDown: UITableViewDataSource {
         }
         
         if self.imageArray.count > indexPath.row {
-            cell!.imageView!.image = UIImage(named: imageArray[indexPath.row])
+            let newImage = resizeImage(image: UIImage(named: imageArray[indexPath.row])!, targetSize: CGSize(width: 200.0, height: 200.0))
+            cell!.imageView!.image = newImage
           
            
         }
         
-//        cell!.imageView!.layer.borderWidth = 0.5
-//        cell!.imageView!.layer.masksToBounds = false
-        cell!.imageView!.layer.cornerRadius = cell!.imageView!.layer.frame.height/2
-//        cell!.imageView!.clipsToBounds = true
+  
+       
+        cell!.imageView!.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        cell!.imageView!.contentMode = .scaleAspectFill
+        cell!.imageView!.layer.cornerRadius =  cell!.imageView!.frame.size.height/2
+        cell!.imageView!.clipsToBounds = true
         
         cell!.textLabel!.text = "\(dataArray[indexPath.row])"
         cell!.accessoryType = indexPath.row == selectedIndex ? .checkmark : .none
         cell!.selectionStyle = .none
         cell?.textLabel?.font = self.font
         
-        cell?.textLabel?.textAlignment = .left
+        cell?.textLabel?.textAlignment = .center
+
+        
         return cell!
     }
+}
+
+func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+  
+    // Figure out what our orientation is, and use that to form the rectangle
+    var newSize: CGSize
+    newSize = CGSize(width: 200,  height: 200)
+    
+    // This is the rect that we've calculated out and this is what is actually used below
+    let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
+    
+    // Actually do the resizing to the rect using the ImageContext stuff
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return newImage!
 }
 //MARK: UITableViewDelegate
 extension DropDown: UITableViewDelegate {
